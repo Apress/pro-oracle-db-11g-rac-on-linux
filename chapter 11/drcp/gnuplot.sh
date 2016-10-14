@@ -1,0 +1,5 @@
+echo "set terminal png"
+echo "set output \"$1.png\""
+echo "set xlabel \"Request\""
+echo "set ylabel \"ms\""
+echo "plot \"$1.p\" using 10 with lines title \"Response time\""

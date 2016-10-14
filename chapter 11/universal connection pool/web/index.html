@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<title>Workload Management Demos</title>
+</head>
+<body>
+
+<table cellspacing="2" cellpadding="2" border="0">
+<tr>
+<td><img src="images/tomcat.gif" /></td>
+<td>
+
+<h1>Pro Oracle RAC 11g on Linux</h1>
+
+<h3>Workload Management Demos</h3>
+<p>
+This is the main landing page for the different samples using Universal Connection Pool (UCP) for Transparent Application Failover and Fast Application Notification. All the examples presented here have been developed and tested on Linux. For the backend database we used a three Oracle Real Application Cluster with a policy managed database running on Red Hat Enterprise Linux 5 update 4, 64bit. Grid Infrastructure was configured with Grid Naming Service, the DHCP and DNS server used an auxiliary machine with Red Hat 5 update 2 using the distribution?s bind DNS and ISC?s DHCP server. The web server used Open SuSE 11.2 and the software listed in the Software Requirement section below
+</p>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+
+<h3>Access Demos</h3>
+
+<p>Use the below links for accessing the demos</p>
+
+<table>
+<tr><th>Demo</th><th>Description</th></tr>
+<tr><td><a href="generic_connection.jsp">UCP Connection Pool Demo</a></td><td>Use of UCP and FAN/FCF</td></th>
+</table>
+
+<h3>Tomcat Instructions</h3>
+
+<p>To deploy and test the demo in your environment, you need to change the following files to reflect your environment:
+<ul>
+<li>$CATALINA_HOME/conf/tomcat-users.xml</li>
+<li>$CATALINA_HOME/conf/server.xml</li>
+<li>$CATALINA_HOME/conf/context.xml</li>
+</ul>
+</p>
+<p><strong>tomcat-users.xml</strong></p>
+<p>
+Access to the manager web application is secured by roles and users. In order to access it we need a user granted the manager role. The easiest way is to modify the existing tomcat-users element as in the following example (some other entries are left out intentionally):
+</p>
+<p>
+<pre>
+&lt;tomcat-users&gt;
+  &lt;role rolename="admin"/&gt;
+  &lt;role rolename="manager"/&gt;
+  &lt;user username="tomcat" 
+        password="secret" 
+        roles="manager,tomcat,admin"/&gt;
+&lt;/tomcat-users&gt;
+</pre>
+</p>
+<p>
+The build.xml file needs to have the same username and password in the manager.url and manager.password variables for automatic deployment to work.
+</p>
+<p><strong>server.xml</strong></p>
+<p>
+JNDI context definitions go here-change the JDBC connection string to point to the correct schema. DDL statements are provided with each chapter
+</p>
+<p><strong>context.xml</strong></p>
+<p>
+JDNI context references go here-see samples
+</p>
+
+<h3>Software Requirements</h3>
+
+<p>You need the following software
+<ul>
+<li>Java 2 SE 1.6</li>
+<li>Apache Tomcat 6</li>
+<li>Apache Ant 1.8</li>
+<li>An Oracle 11.2 client installation</li>
+</ul>
+</p>
+<p>
+For greatest portability and distribution independence the official JDK from Oracle has been used. For simplicity, the JDK was installed under /opt/jdk1.6.0_18 during development, ant's binary distribution was unzipped to /opt/apache-ant-1.8 and Tomcat went to /opt/apache-tomcat-6.0.24. An environment script to set the necessary variables to start Tomcat could take the following contents:
+</p>
+<p>
+<pre>
+#!/bin/bash
+
+export JAVA_HOME=/opt/jdk1.6.0_18
+export CATALINA_HOME=/opt/apache-tomcat-6.0.24
+export ANT_HOME=/opt/apache-ant-1.8.0
+export ORACLE_HOME=/u01/app/oracle/product/11.2.0/client_1
+
+export PATH=$CATALINA_HOME/bin:$JAVA_HOME/bin:$ANT_HOME/bin:$PATH
+</pre>
+</p>
+<p>You need to copy the following Oracle database specific JAR files to $CATALINA_HOME/lib from the Oracle client:
+<ul>
+<li>ojdbc6.jar</li>
+<li>orai18n.jar</li>
+<li>ucp.jar</li>
+<li>ons.jar</li>
+</ul>
+</p>
+
+<h3>Setting up ONS for FAN/FCF</h3>
+
+<p>
+To enable the FAN/FCF examples you have to edit the $ORACLE_CLIENT_HOME/opmn/conf/ons.conf file to point to the ONS processes of the database servers as in the following example:
+</p>
+<p>
+<pre>
+localport=6100
+remoteport=6200
+nodes=node1:6200,node2:6200,node3:6200
+</pre>
+</p>
+<p>
+Replace noden with the public hostname of your cluster database node. If you are unsure which port ONS uses on the database server, you can use the onsctl ping command to find out. To tell UCP about the Oracle client installation and ONS configuration, edit $CATALINA_HOME/startup.sh and modify $CATALINA_OPTS:
+<pre>
+CATALINA_OPTS="-Doracle.ons.oraclehome=/u01/app/oracle/product/11.2.0/client_1 $CATALINA_OPTS"
+</pre>
+This should get you started, if not troubleshoot using $CATALINA_HOME/logs/catalina.out
+</p>
+<p>
+</p>
+<p>
+</p>
+
+
+</td>
+</tr>
+</table>
+
+
+</body>
+</html>

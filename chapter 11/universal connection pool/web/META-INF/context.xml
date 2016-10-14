@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Context>
+
+	<Resource name="jdbc/reporting" auth="Container" factory="oracle.ucp.jdbc.PoolDataSourceImpl" type="oracle.ucp.jdbc.PoolDataSource" description="FCF RAC databse" connectionFactoryClassName="oracle.jdbc.pool.OracleDataSource" connectionWaitTimeout="30" minPoolSize="5" maxPoolSize="30" inactiveConnectionTimeout="60" timeoutCheckInterval="30" fastConnectionFailoverEnabled="true" onsConfiguration="nodes=rac11g2node1:6200,rac11gr2node2:6200,rac11gr2node3:6200,rac11gr2node4:6200" user="tomcat" password="tomcat" url="jdbc:oracle:thin:@//scanrac11gr2:1521/reporting" connectionPoolName="martins connection pool" validateConnectionOnBorrow="true" sqlForValidateConnection="select 1 from DUAL" maxConnectionReuseTime="30" />
+
+</Context>
